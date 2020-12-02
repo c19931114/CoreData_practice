@@ -8,22 +8,64 @@
 import UIKit
 
 class SecondViewController: BaseViewController {
-
+    
+    private let cellID = String(describing: AlbumCell.self)
+    private lazy var datas: [APIDataTable] = []
+    private lazy var collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.minimumLineSpacing = 0
+        layout.minimumInteritemSpacing = 0
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.register(AlbumCell.self, forCellWithReuseIdentifier: cellID)
+        collectionView.backgroundColor = .red
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        return collectionView
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        guard let results = DBManager.shared.request() else { return }
+        datas = results
+        setupUI()
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    //    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    //        super.viewWillTransition(to: size, with: coordinator)
+    //        collectionView.reloadData()
+    //    }
+    
+    private func setupUI() {
+        view.addSubview(collectionView)
+        collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
     }
-    */
-
+}
+extension SecondViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 500//datas.count
+    }
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let reuseCell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath)
+        guard let cell = reuseCell as? AlbumCell else { return reuseCell }
+//        cell.configCell(with: <#T##APIDataTable#>)
+        return cell
+    }
+}
+extension SecondViewController: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        let width = collectionView.frame.width
+        
+        let itemWidth = width / 4
+        return CGSize(width: itemWidth, height: itemWidth)
+    }
 }

@@ -28,7 +28,6 @@ class FirstViewController: BaseViewController {
         super.viewDidLoad()
         
         setupUI()
-        // Do any additional setup after loading the view.
     }
     
     private func setupUI() {
@@ -41,14 +40,15 @@ class FirstViewController: BaseViewController {
     }
     @objc private func buttonTapped() {
         print("buttonTapped")
-        let httpClient = HTTPClient()
-        httpClient.fetchAPIData { (datas, error) in
-            if let datas = datas {
-                for data in datas {
-                    DBManager.shared.save(apiData: data)
-                }
-            }
-            self.navigationController?.pushViewController(SecondViewController(), animated: true)
-        }
+        self.navigationController?.pushViewController(SecondViewController(), animated: true)
+//        let httpClient = HTTPClient()
+//        httpClient.fetchAPIData { (datas, error) in
+//            if let datas = datas {
+//                for data in datas {
+//                    DBManager.shared.save(apiData: data)
+//                }
+//            }
+//            self.navigationController?.pushViewController(SecondViewController(), animated: true)
+//        }
     }
 }

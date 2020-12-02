@@ -18,6 +18,7 @@
 		A217C5F7257673E9009BFCB1 /* APIData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A217C5F6257673E9009BFCB1 /* APIData.swift */; };
 		A217C6042576941A009BFCB1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A217C5E225766DA1009BFCB1 /* LaunchScreen.storyboard */; };
 		A2BFE1062576AD07001788A5 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2BFE1052576AD07001788A5 /* SecondViewController.swift */; };
+		A2BFE27F2577E002001788A5 /* AlbumCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2BFE27E2577E002001788A5 /* AlbumCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		A217C5F325767370009BFCB1 /* HTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClient.swift; sourceTree = "<group>"; };
 		A217C5F6257673E9009BFCB1 /* APIData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIData.swift; sourceTree = "<group>"; };
 		A2BFE1052576AD07001788A5 /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
+		A2BFE27E2577E002001788A5 /* AlbumCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +81,7 @@
 				A217C5DB25766D9E009BFCB1 /* BaseViewController.swift */,
 				A217C5F025766F9B009BFCB1 /* FirstViewController.swift */,
 				A2BFE1052576AD07001788A5 /* SecondViewController.swift */,
+				A2BFE27E2577E002001788A5 /* AlbumCell.swift */,
 				A217C5F325767370009BFCB1 /* HTTPClient.swift */,
 				A217C5F6257673E9009BFCB1 /* APIData.swift */,
 				A205149525769A96001D4903 /* DBManager.swift */,
@@ -166,6 +169,7 @@
 				A217C5F425767370009BFCB1 /* HTTPClient.swift in Sources */,
 				A20514BC2576A702001D4903 /* DemoModel.xcdatamodeld in Sources */,
 				A217C5D825766D9E009BFCB1 /* AppDelegate.swift in Sources */,
+				A2BFE27F2577E002001788A5 /* AlbumCell.swift in Sources */,
 				A217C5DA25766D9E009BFCB1 /* SceneDelegate.swift in Sources */,
 				A217C5F125766F9B009BFCB1 /* FirstViewController.swift in Sources */,
 			);

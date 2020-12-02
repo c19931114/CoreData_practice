@@ -30,7 +30,7 @@ class DBManager {
         guard let object = NSEntityDescription.insertNewObject(
                 forEntityName: entity,
                 into: context) as? APIDataTable else { return }
-    
+        
         object.update(with: apiData)
         saveContext()
     }
@@ -44,16 +44,14 @@ class DBManager {
         }
     }
     
-    func request() {
+    func request() -> [APIDataTable]? {
         
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
         request.sortDescriptors = [NSSortDescriptor(key: "id", ascending: true)]
-
+        
         do {
-            guard let results = try context.fetch(request) as? [APIDataTable] else { return }
-            for result in results {
-                print("\(result.id)")
-            }
+            guard let results = try context.fetch(request) as? [APIDataTable] else { return nil }
+            return results
         } catch {
             fatalError("\(error)")
         }
@@ -62,12 +60,10 @@ class DBManager {
 
 extension APIDataTable {
     func update(with apiData: APIData) {
-//        for apiData in apiDatas {
-            albumId = Int16(apiData.albumId)
-            id = Int16(apiData.id)
-            title = apiData.title
-            url = apiData.url
-            thumbnailUrl = apiData.thumbnailUrl
-//        }
+        albumId = Int16(apiData.albumId)
+        id = Int16(apiData.id)
+        title = apiData.title
+        url = apiData.url
+        thumbnailUrl = apiData.thumbnailUrl
     }
 }
