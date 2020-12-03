@@ -40,15 +40,14 @@ class FirstViewController: BaseViewController {
     }
     @objc private func buttonTapped() {
         print("buttonTapped")
-        self.navigationController?.pushViewController(SecondViewController(), animated: true)
-//        let httpClient = HTTPClient()
-//        httpClient.fetchAPIData { (datas, error) in
-//            if let datas = datas {
-//                for data in datas {
-//                    DBManager.shared.save(apiData: data)
-//                }
-//            }
-//            self.navigationController?.pushViewController(SecondViewController(), animated: true)
-//        }
+        let httpClient = HTTPClient()
+        httpClient.fetchAPIData { (datas, error) in
+            if let datas = datas {
+                for data in datas {
+                    DBManager.shared.update(with: data)
+                }
+            }
+            self.navigationController?.pushViewController(SecondViewController(), animated: true)
+        }
     }
 }

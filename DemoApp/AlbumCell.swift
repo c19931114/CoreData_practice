@@ -7,26 +7,29 @@
 
 import UIKit
 
+// cache reference:
+// https://medium.com/better-programming/cache-images-in-a-uicollectionview-using-nscache-in-swift-5-b70ebf090521
+
 class AlbumCell: UICollectionViewCell {
-    lazy var idLabel: UILabel = {
+//    private lazy var cache = NSCache<NSNumber, UIImage>()
+    private lazy var idLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    lazy var titleLabel: UILabel = {
+    private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 2
+        label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    lazy var imageView: UIImageView = {
+    private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.addSubview(idLabel)
         imageView.addSubview(titleLabel)
-        imageView.backgroundColor = .yellow
         idLabel.centerXAnchor.constraint(equalTo: imageView.centerXAnchor).isActive = true
         idLabel.topAnchor.constraint(equalTo: imageView.topAnchor, constant: 8).isActive = true
-        titleLabel.topAnchor.constraint(equalTo: idLabel.topAnchor, constant: 8).isActive = true
         titleLabel.bottomAnchor.constraint(equalTo: imageView.bottomAnchor).isActive = true
         titleLabel.leadingAnchor.constraint(equalTo: imageView.leadingAnchor).isActive = true
         titleLabel.trailingAnchor.constraint(equalTo: imageView.trailingAnchor).isActive = true
@@ -40,7 +43,10 @@ class AlbumCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        imageView.image = nil
+    }
     private func setupUI() {
         contentView.addSubview(imageView)
         imageView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
@@ -48,9 +54,10 @@ class AlbumCell: UICollectionViewCell {
         imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
         imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
     }
-    func configCell(with data: APIDataTable) {
+    func configCell(with data: APIDataTable, index: Int) {
         idLabel.text = "\(data.id)"
         titleLabel.text = data.title
-//        imageView.image =
+        guard let urlString = data.thumbnailUrl else { return }
+        imageView.load(urlString: urlString, id: Int(data.id))
     }
 }

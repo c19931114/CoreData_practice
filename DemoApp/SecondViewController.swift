@@ -9,6 +9,8 @@ import UIKit
 
 class SecondViewController: BaseViewController {
     
+    private let cache = NSCache<NSNumber, UIImage>()
+    private let utilityQueue = DispatchQueue.global(qos: .utility)
     private let cellID = String(describing: AlbumCell.self)
     private lazy var datas: [APIDataTable] = []
     private lazy var collectionView: UICollectionView = {
@@ -17,7 +19,7 @@ class SecondViewController: BaseViewController {
         layout.minimumInteritemSpacing = 0
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(AlbumCell.self, forCellWithReuseIdentifier: cellID)
-        collectionView.backgroundColor = .red
+        collectionView.backgroundColor = .clear
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -32,10 +34,10 @@ class SecondViewController: BaseViewController {
         setupUI()
     }
     
-    //    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-    //        super.viewWillTransition(to: size, with: coordinator)
-    //        collectionView.reloadData()
-    //    }
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        collectionView.reloadData()
+    }
     
     private func setupUI() {
         view.addSubview(collectionView)
@@ -46,26 +48,33 @@ class SecondViewController: BaseViewController {
     }
 }
 extension SecondViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 500//datas.count
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        numberOfItemsInSection section: Int) -> Int {
+        return datas.count
     }
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView,
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let reuseCell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath)
         guard let cell = reuseCell as? AlbumCell else { return reuseCell }
-//        cell.configCell(with: <#T##APIDataTable#>)
+        cell.configCell(with: datas[indexPath.item], index: indexPath.item)
         return cell
     }
 }
 extension SecondViewController: UICollectionViewDelegateFlowLayout {
     
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        sizeForItemAt indexPath: IndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         let width = collectionView.frame.width
         
         let itemWidth = width / 4
         return CGSize(width: itemWidth, height: itemWidth)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let vc = ThirdViewController(with: datas[indexPath.item])
+        navigationController?.pushViewController(vc, animated: true)
     }
 }

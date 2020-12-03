@@ -24,36 +24,52 @@ class DBManager {
         return container
     }()
     
-    private lazy var context = persistentContainer.viewContext
+    lazy var context = persistentContainer.viewContext
     
-    func save(apiData: APIData) {
+    func request() -> [APIDataTable]? {
+        
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
+        request.sortDescriptors = [NSSortDescriptor(key: "id", ascending: true)]
+        do {
+            guard let results = try context.fetch(request) as? [APIDataTable] else { return nil }
+            return results
+        } catch {
+            fatalError("\(error)")
+        }
+    }
+    func update(with apiData: APIData) {
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
+        let predicate = NSPredicate(format: "id=%@", "\(apiData.id)")
+        request.predicate = predicate
+        
+        do {
+            guard let results = try context.fetch(request) as? [APIDataTable] else {
+                save(apiData: apiData)
+                return
+            }
+            if results.isEmpty {
+                save(apiData: apiData)
+            } else {
+                results.first?.update(with: apiData)
+            }
+            saveContext()
+        } catch let error {
+            print(error)
+        }
+    }
+    private func save(apiData: APIData) {
         guard let object = NSEntityDescription.insertNewObject(
                 forEntityName: entity,
                 into: context) as? APIDataTable else { return }
         
         object.update(with: apiData)
-        saveContext()
     }
-    
     private func saveContext() {
         guard context.hasChanges else { return }
         do {
             try context.save()
         } catch let error {
             print(error)
-        }
-    }
-    
-    func request() -> [APIDataTable]? {
-        
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
-        request.sortDescriptors = [NSSortDescriptor(key: "id", ascending: true)]
-        
-        do {
-            guard let results = try context.fetch(request) as? [APIDataTable] else { return nil }
-            return results
-        } catch {
-            fatalError("\(error)")
         }
     }
 }
