@@ -40,6 +40,7 @@ class FirstViewController: BaseViewController {
     }
     @objc private func buttonTapped() {
         print("buttonTapped")
+        self.navigationController?.pushViewController(SecondViewController(), animated: true)
         let httpClient = HTTPClient()
         httpClient.fetchAPIData { (datas, error) in
             if let datas = datas {
@@ -47,7 +48,6 @@ class FirstViewController: BaseViewController {
                     DBManager.shared.update(with: data)
                 }
             }
-            self.navigationController?.pushViewController(SecondViewController(), animated: true)
         }
     }
 }

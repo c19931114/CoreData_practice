@@ -9,8 +9,6 @@ import UIKit
 
 class SecondViewController: BaseViewController {
     
-    private let cache = NSCache<NSNumber, UIImage>()
-    private let utilityQueue = DispatchQueue.global(qos: .utility)
     private let cellID = String(describing: AlbumCell.self)
     private lazy var datas: [APIDataTable] = []
     private lazy var collectionView: UICollectionView = {
